@@ -10,7 +10,8 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 // screens
 import HomeScreen from "./src/screens/HomeScreen";
-import Signup from "./src/screens/signup";
+import SignIn from "./src/screens/SignIn";
+import Signup from "./src/screens/SignUp";
 
 const Stack = createStackNavigator();
 const MyTheme = {
@@ -35,8 +36,18 @@ const AuthNavigator = () => {
   return (
     <Stack.Navigator>
       <Stack.Screen
-        name="Signup"
+        name="SignIn"
+        component={SignIn}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="SignUp"
         component={Signup}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Home"
+        component={HomeScreen}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
@@ -45,7 +56,8 @@ const AuthNavigator = () => {
 export default function App() {
   return (
     <NavigationContainer theme={MyTheme}>
-      <HomeNavigator />
+      {/* <HomeNavigator /> */}
+      <AuthNavigator />
     </NavigationContainer>
   );
 }

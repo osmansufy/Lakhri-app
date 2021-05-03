@@ -7,42 +7,18 @@ import {
   SafeAreaView,
   StatusBar,
   TouchableHighlight,
-  TouchableOpacity,
   Button,
+  TouchableOpacity,
 } from "react-native";
-import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 
-import { useRef } from "react";
-import firebase from "../firebaseConfig";
-const Signup = ({ navigation }) => {
-  const recaptchaVerifier = React.useRef(null);
-  const [code, setCode] = useState("");
-  const [verificationId, setVerificationId] = useState(null);
+const SignUp = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState();
   const [passWord, setPassWord] = useState();
-  const [confirmPassWord, setConfirmPassWord] = useState();
-  const firebaseConfig = firebase.apps.length
-    ? firebase.app().options
-    : undefined;
-  const onSendVerificationCode = () => {
-    console.log(phoneNumber, recaptchaVerifier);
-    const phoneProvider = new firebase.auth.PhoneAuthProvider();
-    phoneProvider
-      .verifyPhoneNumber(`+88${phoneNumber}`, recaptchaVerifier.current)
-      .then((res) => {
-        console.log(res);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  const [email, setEmail] = useState();
+
   return (
     <SafeAreaView style={styles.body}>
       <View style={{ padding: 10 }}>
-        <FirebaseRecaptchaVerifierModal
-          ref={recaptchaVerifier}
-          firebaseConfig={firebaseConfig}
-        />
         <Text style={styles.heading}>Sign In</Text>
         <TextInput
           style={styles.input}
@@ -59,23 +35,25 @@ const Signup = ({ navigation }) => {
         />
         <TextInput
           style={styles.input}
-          placeholder="Confirm Password"
-          onChangeText={(text) => setConfirmPassWord(text)}
-          value={confirmPassWord}
+          placeholder="Email"
+          onChangeText={(text) => setEmail(text)}
+          value={email}
           keyboardType="email-address"
         />
       </View>
-      <TouchableHighlight
-        onPress={onSendVerificationCode}
-        style={styles.submit}
-        underlayColor="#fff"
-      >
-        <Text style={styles.submitText}>Join Now</Text>
+      <TouchableHighlight style={styles.submit} underlayColor="#fff">
+        <Text style={styles.submitText}>Submit</Text>
       </TouchableHighlight>
-      <View style={styles.navigationContainer}>
-        <Text>Already a member?</Text>
-        <TouchableOpacity onPress={() => navigation.push("SignIn")}>
-          <Text style={{ marginLeft: 5, color: "blue" }}>Sign In</Text>
+      <View style={{ justifyContent: "center", alignItems: "center" }}>
+        <View style={styles.navigationContainer}>
+          <Text>Not a Member?</Text>
+          <TouchableOpacity onPress={() => navigation.push("SignUp")}>
+            <Text style={{ marginLeft: 5, color: "blue" }}>Join Now</Text>
+          </TouchableOpacity>
+        </View>
+        <Text style={{ marginTop: 10, marginBottom: 10 }}>Or</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Text>Skip for Now</Text>
         </TouchableOpacity>
       </View>
     </SafeAreaView>
@@ -113,16 +91,15 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#fff",
   },
-
-  submitText: {
-    color: "#fff",
-    textAlign: "center",
-  },
   navigationContainer: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     marginTop: 10,
   },
+  submitText: {
+    color: "#fff",
+    textAlign: "center",
+  },
 });
-export default Signup;
+export default SignUp;
